@@ -12,7 +12,7 @@ function App() {
   const [displayBoard,setDisplayBoard] = useState(false);
   const [displayChooseStart,setDisplayChooseStart] = useState(false);
   const [call,setCall] = useState(0);
-  const dict = {
+  const dictComputerStart = {
     0:8,
     1:7,
     2:6,
@@ -22,8 +22,80 @@ function App() {
     7:1,
     8:0,
   };
+  const dictUserStartOnEdgeFirstStep = {
+    1:[3,5],
+    3:[1,7],
+    5:[1,7],
+    7:[3,5],
+  };
+  const dictUserStartOnEdgeSecondStep = {
+    3:5,
+    5:3,
+    1:7,
+    7:1,
+  };
+
 
   let strings = Array.from(gameState);
+  const whenUserFirstStartOnEdge = useCallback (()=>{
+    if(counter === 1) {
+      console.log(counter)
+      if(whichMove==='computer' && call === 0) {
+        for(let i = 0; i < strings.length; i++) {
+          if(!IsXChance)
+          {
+            if(strings[i] === 'X' && (i === 1 || i === 3 || i===5 || i===7)) {
+             strings[dictUserStartOnEdgeFirstStep[i][Math.floor(Math.random() * dictUserStartOnEdgeFirstStep[i].length)]] =  'O';
+             setWhichMove('player')
+           setGameState(strings)
+           setCounter(counter + 1)
+           setIsXChance(true)
+            }
+         }
+         if(IsXChance)
+         {
+           if(strings[i] === 'O' && (i === 1 || i === 3 || i===5 || i===7)) {
+            strings[dictUserStartOnEdgeFirstStep[i][Math.floor(Math.random() * dictUserStartOnEdgeFirstStep[i].length)]] =  'X';
+            setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          setIsXChance(false)
+           }
+        }
+        
+        }}
+    }
+    if(counter === 3) {
+    if(whichMove==='computer' && call === 0) {
+      for(let i = 0; i < strings.length; i++) {
+        if(!IsXChance)
+        {
+          if(strings[i] === 'O' && (i === 3 || i === 5)) {
+           if(strings[dictUserStartOnEdgeSecondStep[i]]) return;
+           strings[dictUserStartOnEdgeSecondStep[i]] =  'O';
+           setWhichMove('player')
+         setGameState(strings)
+         setCounter(counter + 1)
+         setIsXChance(true)
+          }
+       }
+       if(IsXChance)
+       {
+         if(strings[i] === 'O' && (i === 1 || i === 3 || i===5 || i===7)) {
+          strings[dictUserStartOnEdgeFirstStep[i][Math.floor(Math.random() * dictUserStartOnEdgeFirstStep[i].length)]] =  'X';
+          setWhichMove('player')
+        setGameState(strings)
+        setCounter(counter + 1)
+        setIsXChance(false)
+         }
+      }
+      
+      }}
+    }    
+  },[IsXChance, call, counter, dictUserStartOnEdgeFirstStep, dictUserStartOnEdgeSecondStep, strings, whichMove])
+  
+
+  
   const chooseButtonX = () => {
     setIsXChance(true);
     setDisplayChooseChar(false)
@@ -58,13 +130,14 @@ function App() {
     setCounter(counter + 1)
     whichMove === 'player' &&  setWhichMove('computer')
     console.log(counter)
+
   }}
     const reset = () =>{
     setGameState(initialState);
     setCounter(0);
+    setCall(0)
     setDisplayChooseChar(true)
     setDisplayBoard(false)
-    setCall(0)
   }
   
   const computerFirstMove = () => {
@@ -106,8 +179,8 @@ function App() {
         if(!IsXChance)
        {
          if(strings[i] === 'X') {
-          if (strings[dict[i]]) continue;
-          strings[dict[i]] =  'O';
+          if (strings[dictComputerStart[i]]) continue;
+          strings[dictComputerStart[i]] =  'O';
           setWhichMove('player')
         setGameState(strings)
         setCounter(counter + 1)
@@ -117,8 +190,8 @@ function App() {
       if(IsXChance)
       {
         if(strings[i] === 'O') {
-         if (strings[dict[i]]) continue;
-         strings[dict[i]] =  'X';
+         if (strings[dictComputerStart[i]]) continue;
+         strings[dictComputerStart[i]] =  'X';
          setWhichMove('player')
        setGameState(strings)
        setCounter(counter + 1)
@@ -127,27 +200,26 @@ function App() {
      }
     }
     }
-  },[IsXChance, counter, dict, strings, whichMove])
+  },[IsXChance, call, counter, dictComputerStart, strings, whichMove])
   
   useEffect(() => {
     const timer = setTimeout(()=>{whenComputerFirstStart()},1000)
+    whenUserFirstStartOnEdge()
     
   let winner  = checkWinner();
   
   
   if (winner) {
-  
+      
+      winner === 'O' && alert(`X WYGRYWA!`)
+      winner === 'X' && alert(`O WYGRYWA!`)
       reset();
-     
-      winner === '0' && alert(`X WYGRYWA!`)
   }
 
   if(counter === 9){  
+    reset();
     alert('Mamy remis!')
-    setGameState(initialState)
-    setCounter(0)
-    setDisplayBoard(false)
-    setDisplayChooseChar(true)
+    
 }
 return () => clearTimeout(timer);
 }, [counter])

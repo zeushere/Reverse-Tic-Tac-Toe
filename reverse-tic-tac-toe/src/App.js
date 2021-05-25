@@ -7,19 +7,70 @@ function App() {
   const [gameState,setGameState] = useState(initialState);
   const [IsXChance, setIsXChance] = useState(false)
   const [counter,setCounter] = useState(0);
-  const status = 'Następny gracz: ' + (IsXChance ? 'X' : 'O');
+  const [displayChooseChar,setDisplayChooseChar] = useState(true);
+  const [whichMove,setWhichMove] = useState('player');
+  const [displayBoard,setDisplayBoard] = useState(false);
+  const [displayChooseStart,setDisplayChooseStart] = useState(false);
+  const dict = {
+    0:8,
+    1:7,
+    2:6,
+    3:5,
+    5:3,
+    6:2,
+    7:1,
+    8:0,
+  };
+
+  let strings = Array.from(gameState);
+  const chooseButtonX = () => {
+    setIsXChance(true);
+    setDisplayChooseChar(false)
+    setDisplayChooseStart(true)
+  }
+  const chooseButtonY = () => {
+    setIsXChance(false)
+    setDisplayChooseChar(false)
+    setDisplayChooseStart(true)
+    
+    
+  }
+
+  const choosePlayer = () => {
+    setWhichMove('player')
+    setDisplayChooseStart(false)
+    setDisplayBoard(true)
+  }
+  const chooseComputer = () => {
+    setWhichMove('computer')
+    setDisplayChooseStart(false)
+    setDisplayBoard(true)
+    computerFirstMove()
+  }
 
   const onSquareClicked = (index) => {
-    let strings = Array.from(gameState);
-    if (strings[index])
-        return;
-    strings[index] = IsXChance ? "X" : "0";
+    if(whichMove === 'player') {
+    if (strings[index]) return;
+    strings[index] = IsXChance ? 'X' : 'O';
     setIsXChance(!IsXChance)
+    
     setGameState(strings)
-  }
+    setCounter(counter + 1)
+    whichMove === 'player' &&  setWhichMove('computer')
+    console.log(counter)
+  }}
     const reset = () =>{
     setGameState(initialState);
     setCounter(0);
+    setDisplayChooseChar(true)
+    setDisplayBoard(false)
+  }
+
+  const computerFirstMove = () => {
+      strings[4] = IsXChance ? "O" : "X";
+    setWhichMove('player')
+    setGameState(strings)
+    setCounter(counter + 1)
   }
 
   const checkWinner = useCallback(
@@ -46,34 +97,76 @@ function App() {
     [gameState, counter],
   );
 
-
+  const whenComputerFirstStart = useCallback (()=>{
+    if(whichMove==='computer') {
+      for(let i = 0; i < strings.length; i++) {
+        if(!IsXChance)
+       {
+         if(strings[i] === 'X') {
+          if (strings[dict[i]]) continue;
+          strings[dict[i]] =  'O';
+          setWhichMove('player')
+        setGameState(strings)
+        setCounter(counter + 1)
+        setIsXChance(true)
+         }
+      }
+      if(IsXChance)
+      {
+        if(strings[i] === 'O') {
+         if (strings[dict[i]]) continue;
+         strings[dict[i]] =  'X';
+         setWhichMove('player')
+       setGameState(strings)
+       setCounter(counter + 1)
+       setIsXChance(true)
+        }
+     }
+    }
+      
+    }
+  },[IsXChance, counter, dict, strings, whichMove])
+  
   useEffect(() => {
+    const timer = setTimeout(()=>{whenComputerFirstStart()},1000)
     
   let winner  = checkWinner();
   
+  
   if (winner) {
+  
       reset();
-      alert(`Ta da ! ${winner} won the Game !`)
+     
+      winner === '0' && alert(`X WYGRYWA!`)
   }
 
-  if(counter.checkWinner === 9){  
+  if(counter === 9){  
     alert('Mamy remis!')
     setGameState(initialState)
     setCounter(0)
+    setDisplayBoard(false)
+    setDisplayChooseChar(true)
 }
-
-}, [gameState])
+return () => clearTimeout(timer);
+}, [counter])
 
   
 
   return (
     
-    <div className="container-sm">
-    <span className = "heading-text">Reverse Tic Tac Toe - Kacper Roda
-    </span>
-    <span style = {{marginBottom: "50px"}}>{status}</span>
-   <span className = "winner"></span>
-
+    <div className="mt-1 container-sm text-center">
+   
+    <span className= "display-5">Odwrotne Kółko i Krzyżyk - Kacper Roda</span>
+    <div className = "mt-2"  style={{display: displayChooseChar? "block":"none" }}  id  = "charDecision"><strong>Wybierz czym chcesz zagrac! </strong><button className = "btn btn-primary mr-2" onClick = {() => chooseButtonY(false)} name = "O">O</button>
+    <button className = "btn btn-primary" name="X" onClick = {() => chooseButtonX()}>X</button>
+    </div>
+    <div className = "mt-2" style={{display: displayChooseStart? "block":"none" }}  id  = "startDecision"><strong>Kto zaczyna? </strong><button className = "btn btn-primary mr-2" onClick = {() => choosePlayer()} name = "player">Ty</button>
+    <button className = "btn btn-primary" name="computer" onClick = {() => chooseComputer()}>Komputer</button>
+    </div>
+    <div className = "mt-2" style={{display: displayBoard? "block":"none" }}  id  = "whichMove"><strong>{whichMove === 'player' && <span>Oczekiwanie na Twój ruch!</span>} {whichMove === 'computer' && <span>Oczekiwanie na ruch komputera</span>}</strong>
+    </div>
+    <br/>
+    <div className = "displayBoard" style = {{display: displayBoard? "inline" : "none"}}>
       <div className = "row justify-content-center">
       <Window className = "col-2 b-top b-left b-right b-bottom d-flex justify-content-center" state={gameState[0]} onClick = {()=>onSquareClicked(0)}></Window>
       <Window className = "col-2 b-top b-right b-bottom d-flex justify-content-center" state={gameState[1]} onClick = {()=>onSquareClicked(1)}></Window>
@@ -89,7 +182,10 @@ function App() {
       <Window className = "col-2 b-right b-bottom d-flex justify-content-center" state={gameState[7]} onClick = {()=>onSquareClicked(7)}></Window>
       <Window className = "col-2 b-bottom b-right d-flex justify-content-center" state={gameState[8]} onClick = {()=>onSquareClicked(8)}></Window>
       </div>
-      <button className = "clear-button" onClick = {() => reset()}>Clear Game</button>
+      <div className = "mt-1">
+      <button className = "btn btn-primary clear-button" onClick = {() => reset()}>Clear Game</button>
+      </div>
+      </div>
       </div>
 
   );

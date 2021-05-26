@@ -36,6 +36,7 @@ function App() {
   };
 
 
+
   let strings = Array.from(gameState);
   const whenUserFirstStartOnEdge = useCallback (()=>{
     if(counter === 1) {
@@ -65,34 +66,309 @@ function App() {
         
         }}
     }
-    if(counter === 3) {
-    if(whichMove==='computer' && call === 0) {
+
+    if(counter === 3 && whichMove==='computer' && call === 0) {
       for(let i = 0; i < strings.length; i++) {
         if(!IsXChance)
         {
-          if(strings[i] === 'O' && (i === 3 || i === 5)) {
-           if(strings[dictUserStartOnEdgeSecondStep[i]]) return;
-           strings[dictUserStartOnEdgeSecondStep[i]] =  'O';
-           setWhichMove('player')
-         setGameState(strings)
-         setCounter(counter + 1)
-         setIsXChance(true)
-          }
-       }
+          if(strings[i] === 'O' && (i === 3) && strings[1] === 'X') {
+           if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+             if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+              strings[0] = 'O'
+              setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          setIsXChance(false)
+             }}
+             else {
+              strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+              setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          setIsXChance(false)
+             }
+            }
+            if(strings[i] === 'O' && (i === 5) && strings[1] === 'X') {
+              if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                 strings[2] = 'O'
+                 setWhichMove('player')
+             setGameState(strings)
+             setCounter(counter + 1)
+             setIsXChance(false)
+                }}
+                else {
+                 strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                 setWhichMove('player')
+             setGameState(strings)
+             setCounter(counter + 1)
+             setIsXChance(false)
+                }
+               }
+               if(strings[i] === 'O' && (i === 7) && strings[3] === 'X') {
+                if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                  if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                   strings[6] = 'O'
+                   setWhichMove('player')
+               setGameState(strings)
+               setCounter(counter + 1)
+               setIsXChance(false)
+                  }}
+                  else {
+                   strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                   setWhichMove('player')
+               setGameState(strings)
+               setCounter(counter + 1)
+               setIsXChance(false)
+                  }
+                 }
+                 if(strings[i] === 'O' && (i === 1) && strings[3] === 'X') {
+                  if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                    if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                     strings[0] = 'O'
+                     setWhichMove('player')
+                 setGameState(strings)
+                 setCounter(counter + 1)
+                 setIsXChance(false)
+                    }}
+                    else {
+                     strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                     setWhichMove('player')
+                 setGameState(strings)
+                 setCounter(counter + 1)
+                 setIsXChance(false)
+                    }
+                   }
+               
+               if(strings[i] === 'O' && (i === 3) && strings[7] === 'X') {
+                if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                  if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                   strings[6] = 'O'
+                   setWhichMove('player')
+               setGameState(strings)
+               setCounter(counter + 1)
+               setIsXChance(false)
+                  }}
+                  else {
+                   strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                   setWhichMove('player')
+               setGameState(strings)
+               setCounter(counter + 1)
+               setIsXChance(false)
+                  }
+                 }
+                 if(strings[i] === 'O' && (i === 1) && strings[5] === 'X') {
+                  if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                    if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                     strings[2] = 'O'
+                     setWhichMove('player')
+                 setGameState(strings)
+                 setCounter(counter + 1)
+                 setIsXChance(false)
+                    }}
+                    else {
+                     strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                     setWhichMove('player')
+                 setGameState(strings)
+                 setCounter(counter + 1)
+                 setIsXChance(false)
+                    }
+                   }
+                   if(strings[i] === 'O' && (i === 7) && strings[5] === 'X') {
+                    if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                      if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                       strings[8] = 'O'
+                       setWhichMove('player')
+                   setGameState(strings)
+                   setCounter(counter + 1)
+                   setIsXChance(false)
+                      }}
+                      else {
+                       strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                       setWhichMove('player')
+                   setGameState(strings)
+                   setCounter(counter + 1)
+                   setIsXChance(false)
+                      }
+                     }
+                   
+                 
+                 if(strings[i] === 'O' && (i === 5) && strings[7] === 'X') {
+                   if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                     if(strings[dictUserStartOnEdgeSecondStep[i]] === 'X') {
+                      strings[8] = 'O'
+                      setWhichMove('player')
+                  setGameState(strings)
+                  setCounter(counter + 1)
+                  setIsXChance(false)
+                     }}
+                     else {
+                      strings[dictUserStartOnEdgeSecondStep[i]] = 'O'
+                      setWhichMove('player')
+                  setGameState(strings)
+                  setCounter(counter + 1)
+                  setIsXChance(false)
+                     }
+                     
+                    }
+              
+           
+        }
+       
        if(IsXChance)
        {
-         if(strings[i] === 'O' && (i === 1 || i === 3 || i===5 || i===7)) {
-          strings[dictUserStartOnEdgeFirstStep[i][Math.floor(Math.random() * dictUserStartOnEdgeFirstStep[i].length)]] =  'X';
-          setWhichMove('player')
+        if(strings[i] === 'X' && (i === 3) && strings[1] === 'O') {
+         if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+           if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+            strings[0] = 'X'
+            setWhichMove('player')
         setGameState(strings)
         setCounter(counter + 1)
         setIsXChance(false)
-         }
+           }}
+           else {
+            strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+            setWhichMove('player')
+        setGameState(strings)
+        setCounter(counter + 1)
+        setIsXChance(false)
+           }
+          }
+          if(strings[i] === 'X' && (i === 5) && strings[1] === 'O') {
+            if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+              if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+               strings[2] = 'X'
+               setWhichMove('player')
+           setGameState(strings)
+           setCounter(counter + 1)
+           setIsXChance(false)
+              }}
+              else {
+               strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+               setWhichMove('player')
+           setGameState(strings)
+           setCounter(counter + 1)
+           setIsXChance(false)
+              }
+             }
+             if(strings[i] === 'X' && (i === 3) && strings[7] === 'O') {
+              if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+                 strings[6] = 'X'
+                 setWhichMove('player')
+             setGameState(strings)
+             setCounter(counter + 1)
+             setIsXChance(false)
+                }}
+                else {
+                 strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+                 setWhichMove('player')
+             setGameState(strings)
+             setCounter(counter + 1)
+             setIsXChance(false)
+                }
+               }
+               if(strings[i] === 'X' && (i === 1) && strings[5] === 'O') {
+                if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                  if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+                   strings[2] = 'X'
+                   setWhichMove('player')
+               setGameState(strings)
+               setCounter(counter + 1)
+               setIsXChance(false)
+                  }}
+                  else {
+                   strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+                   setWhichMove('player')
+               setGameState(strings)
+               setCounter(counter + 1)
+               setIsXChance(false)
+                  }
+                 }
+                 if(strings[i] === 'X' && (i === 7) && strings[5] === 'O') {
+                  if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                    if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+                     strings[8] = 'X'
+                     setWhichMove('player')
+                 setGameState(strings)
+                 setCounter(counter + 1)
+                 setIsXChance(false)
+                    }}
+                    else {
+                     strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+                     setWhichMove('player')
+                 setGameState(strings)
+                 setCounter(counter + 1)
+                 setIsXChance(false)
+                    }
+                   }
+                 
+               
+                   if(strings[i] === 'X' && (i === 7) && strings[3] === 'O') {
+                    if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                      if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+                       strings[6] = 'X'
+                       setWhichMove('player')
+                   setGameState(strings)
+                   setCounter(counter + 1)
+                   setIsXChance(false)
+                      }}
+                      else {
+                       strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+                       setWhichMove('player')
+                   setGameState(strings)
+                   setCounter(counter + 1)
+                   setIsXChance(false)
+                      }
+                     }
+                     if(strings[i] === 'X' && (i === 1) && strings[3] === 'O') {
+                      if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                        if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+                         strings[0] = 'X'
+                         setWhichMove('player')
+                     setGameState(strings)
+                     setCounter(counter + 1)
+                     setIsXChance(false)
+                        }}
+                        else {
+                         strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+                         setWhichMove('player')
+                     setGameState(strings)
+                     setCounter(counter + 1)
+                     setIsXChance(false)
+                        }
+                       }
+
+
+               if(strings[i] === 'X' && (i === 5) && strings[7] === 'O') {
+                 if(strings[dictUserStartOnEdgeSecondStep[i]]) {
+                   if(strings[dictUserStartOnEdgeSecondStep[i]] === 'O') {
+                    strings[8] = 'X'
+                    setWhichMove('player')
+                setGameState(strings)
+                setCounter(counter + 1)
+                setIsXChance(false)
+                   }}
+                   else {
+                    strings[dictUserStartOnEdgeSecondStep[i]] = 'X'
+                    setWhichMove('player')
+                setGameState(strings)
+                setCounter(counter + 1)
+                setIsXChance(false)
+                   }
+                   
+                  }
+            
+         
       }
-      
-      }}
-    }    
-  },[IsXChance, call, counter, dictUserStartOnEdgeFirstStep, dictUserStartOnEdgeSecondStep, strings, whichMove])
+    
+      }
+    }
+
+
+    
+   }    
+  ,[IsXChance, call, counter, dictUserStartOnEdgeFirstStep, dictUserStartOnEdgeSecondStep, strings, whichMove])
   
 
   

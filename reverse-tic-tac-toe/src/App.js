@@ -12,7 +12,7 @@ function App() {
   const [displayBoard,setDisplayBoard] = useState(false);
   const [displayChooseStart,setDisplayChooseStart] = useState(false);
   const [call,setCall] = useState(0);
-  const dictComputerStart = {
+  const oppositeMove = {
     0:8,
     1:7,
     2:6,
@@ -74,6 +74,16 @@ function App() {
 
       
       
+    }
+    if(counter === 3 && whichMove === 'computer' && call === 0) {
+      if(IsXChance) {
+
+      }
+
+      if(!IsXChance) {
+        
+      }
+
     }
 
   },[call, counter, whichMove])
@@ -160,8 +170,8 @@ function App() {
         if(!IsXChance)
        {
          if(strings[i] === 'X') {
-          if (strings[dictComputerStart[i]]) continue;
-          strings[dictComputerStart[i]] =  'O';
+          if (strings[oppositeMove[i]]) continue;
+          strings[oppositeMove[i]] =  'O';
           setWhichMove('player')
         setGameState(strings)
         setCounter(counter + 1)
@@ -171,8 +181,8 @@ function App() {
       if(IsXChance)
       {
         if(strings[i] === 'O') {
-         if (strings[dictComputerStart[i]]) continue;
-         strings[dictComputerStart[i]] =  'X';
+         if (strings[oppositeMove[i]]) continue;
+         strings[oppositeMove[i]] =  'X';
          setWhichMove('player')
        setGameState(strings)
        setCounter(counter + 1)
@@ -181,11 +191,10 @@ function App() {
      }
     }
     }
-  },[IsXChance, call, counter, dictComputerStart, strings, whichMove])
+  },[IsXChance, call, counter, oppositeMove, strings, whichMove])
   
   useEffect(() => {
     const timer = setTimeout(()=>{whenComputerFirstStart()},1000)
-    // whenUserFirstStartOnEdge()
   userFirstStart()
     
   let winner  = checkWinner();

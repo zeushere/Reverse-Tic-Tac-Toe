@@ -62,9 +62,7 @@ function App() {
           else if(char === 'O') {
             setIsXChance(true)
           }
-
           j= places.length+1
-        
         }
         
           
@@ -91,8 +89,6 @@ function App() {
           j= places.length+1
           }
         
-        
-       
         break;
       }
       
@@ -113,10 +109,7 @@ function App() {
           }
           j= places.length+1
          }
-        
-        
           break;
-        
       }
       case 3: {
       
@@ -617,10 +610,10 @@ function App() {
     for(let i = 0; i < strings.length; i++) {
       if(!IsXChance)
      {
-      
       if(strings[i] === 'X') {
         if (strings[oppositeMove[i]]){
           strings[bestMoveFive(i,'O')] = 'O'
+          break;
          }
          else {
          strings[oppositeMove[i]] =  'O';
@@ -655,39 +648,11 @@ function App() {
   }
   
 }
-// if(counter === 7 && whichMove === 'computer' && call === 0) {
-//   for(let i = 0; i < strings.length; i++) {
-//     if(!IsXChance)
-//    {
-//     if(strings[i] === 'X') {
-//       if (strings[oppositeMove[i]]) continue;
-//       strings[oppositeMove[i]] =  'O';
-//       setWhichMove('player')
-//     setGameState(strings)
-//     setCounter(counter + 1)
-//     setIsXChance(true)
-//     busyPlace(i)
-//     break;
-//      }
-//   }
-//  if(IsXChance)
-//   {
-//     if(strings[i] === 'O') {
-//      if (strings[oppositeMove[i]]) continue;
-//      strings[oppositeMove[i]] =  'X';
-//      setWhichMove('player')
-//    setGameState(strings)
-//    setCounter(counter + 1)
-//    setIsXChance(false)
-//    busyPlace(i)
-//    break;
-//   }
-//  }
-
-// }
-
-// }
-  },[IsXChance, call, counter, oppositeMove, placeWithoutCenter, strings, whichMove])
+if(counter === 7 && whichMove === 'computer' && call === 0) {
+ for(let i = 0; i < strings.length; i++) {
+console.log("elo") 
+}
+  }},[IsXChance, bestMoveFive, busyPlace, call, counter, oppositeMove, placeWithoutCenter, strings, whichMove])
   const chooseButtonX = () => {
     setIsXChance(true);
     setDisplayChooseChar(false)

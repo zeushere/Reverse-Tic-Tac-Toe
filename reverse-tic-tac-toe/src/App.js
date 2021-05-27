@@ -14,7 +14,8 @@ function App() {
   const [displayChooseStart,setDisplayChooseStart] = useState(false);
   const [call,setCall] = useState(0);
   const [places,setPlaces] = useState(initialPlaces);
-  const oppositeMove = {
+  const [indexClicked,setIndexClicked] = useState(0);
+  const oppositeMove = useCallback({
     0:8,
     1:7,
     2:6,
@@ -23,33 +24,33 @@ function App() {
     6:2,
     7:1,
     8:0,
-  };
-  const dictUserStartOnEdgeFirstStep = {
+  });
+  const dictUserStartOnEdgeFirstStep = useCallback({
     1:[3,5],
     3:[1,7],
     5:[1,7],
     7:[3,5],
-  };
-  const dictUserStartOnEdgeSecondStep = {
+  });
+  const dictUserStartOnEdgeSecondStep = useCallback({
     3:5,
     5:3,
     1:7,
     7:1,
-  };
+  });
   const placeWithoutCenter = [0,1,2,3,5,6,7,8];
   
 
-  const busyPlace = (index) =>{ 
+  const busyPlace = useCallback((index) =>{ 
     setPlaces(places.filter(place => place !== index));
-  }
+  })
 
-  const bestMoveFive = (index, char) => {
+  const bestMoveFive = useCallback((index, char) => {
     for(let j = 0; j<places.length; j++){
       
     switch(places[j]) {
       case 0: {
       
-        if((strings[1] !== char)  || (strings[3] !== char)) { strings[places[j]] = char;
+        if((strings[1] !== char)  || (strings[3] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -73,7 +74,7 @@ function App() {
     
       case 1: {
       
-        if((strings[0] !== char)  || (strings[2] !== char)) { strings[places[j]] = char;
+        if((strings[0] !== char)  || (strings[2] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -94,7 +95,7 @@ function App() {
       
       case 2: {
       
-        if((strings[1] !== char)  || (strings[5] !== char)) { strings[places[j]] = char;
+        if((strings[1] !== char)  || (strings[5] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -113,7 +114,7 @@ function App() {
       }
       case 3: {
       
-        if((strings[0] !== char)  || (strings[6] !== char)) { strings[places[j]] = char;
+        if((strings[0] !== char)  || (strings[6] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -134,7 +135,7 @@ function App() {
         }
       case 5: {
       
-        if((strings[2] !== char)  || (strings[8] !== char)) { strings[places[j]] = char;
+        if((strings[2] !== char)  || (strings[8] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -157,7 +158,7 @@ function App() {
       
       case 6: {
       
-        if((strings[3] !== char)  || (strings[7] !== char)) { strings[places[j]] = char;
+        if((strings[3] !== char)  || (strings[7] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -179,7 +180,7 @@ function App() {
       }
       case 7: {
       
-        if((strings[6] !== char)  || (strings[8] !== char)) { strings[places[j]] = char;
+        if((strings[6] !== char)  || (strings[8] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -201,7 +202,7 @@ function App() {
         }
       case 8: {
       
-        if((strings[7] !== char)  || (strings[5] !== char)) { strings[places[j]] = char;
+        if((strings[7] !== char)  || (strings[5] !== char) ||  (strings[4] !== char)) { strings[places[j]] = char;
           setWhichMove('player')
           setGameState(strings)
           setCounter(counter + 1)
@@ -225,261 +226,193 @@ function App() {
     }
   
   }
-
-    }
-    // const bestMoveFive = (index, char) => {
-    //   for(let j = 0; j<places.length; j++){
-    //   switch(places[j]) {
-    //     case 0: {
-    //       if((strings[1] === char && strings[2] === char) || (strings[3] === char  && strings[6] === char) || (strings[4] === char  && strings[8] === char)){
-          
-    //         strings[places[j]] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 1: {
-    //       if((strings[0] === char && strings[2] === char) || (strings[4] === char  && strings[7] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 2: {
-    //       if((strings[0] === char && strings[1] === char) || (strings[5] === char  && strings[8] === char) || (strings[4] === char  && strings[6] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 3: {
-    //       if((strings[0] === char && strings[6] === char) || (strings[4] === char  && strings[5] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 5: {
-    //       if((strings[2] === char && strings[8] === char) || (strings[4] === char  && strings[3] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 6: {
-    //       if((strings[0] === char && strings[3] === char) || (strings[7] === char  && strings[8] === char) || (strings[4] === char  && strings[2] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 7: {
-    //       console.log("hello")
-    //       if((strings[6] === char && strings[8] === char) || (strings[4] === char  && strings[1] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     case 8: {
-    //       if((strings[6] === char && strings[7] === char) || (strings[2] === char  && strings[5] === char) || (strings[4] === char  && strings[0] === char)){
-    //         newIndex = places[Math.floor(Math.random() * places.length)]
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //       else {
-    //         strings[newIndex] = char;
-    //         setWhichMove('player')
-    //         setGameState(strings)
-    //         setCounter(counter + 1)
-    //         busyPlace(index)
-    //         if(char === 'X') {
-    //           setIsXChance(false)
-    //         }
-    //         else if(char === 'O') {
-    //           setIsXChance(true)
-    //         }
-    //       }
-    //     break;
-    //     }
-    //     default: {
-    //       console.log("brak ruchu")
-    //   }
-    
-    // }
   
-    //   }
 }
-
+  }
+  )
+  const bestMoveSeven = useCallback((index, char) => {
+    for(let j = 0; j<places.length; j++){
+      
+    switch(places[j]) {
+      case 0: {
+      
+        if((strings[1] !== char) ||  (strings[3] !== char) || (strings[4] !== char)) { strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello0")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+        }
+        
+      break;
+    }
+    
+      case 1: {
+      
+        if((strings[0] !== char)  || (strings[2] !== char) || (strings[4] !== char) ){ strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello1")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+          }
+        
+        break;
+      }
+      
+      case 2: {
+      
+        if((strings[1] !== char) || (strings[5] !== char) || (strings[4] !== char)) { strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello2")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+         }
+          break;
+      }
+      case 3: {
+      
+        if((strings[0] !== char)  || (strings[6] !== char) || (strings[4] !== char)) { strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello3")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+          }
+        
+        
+          break;
+        }
+      case 5: {
+      
+        if((strings[2] !== char)  || (strings[8] !== char) || (strings[4] !== char)){ strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello5")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+          }
+        
+         
+          break;
+        }
+      
+      
+      case 6: {
+      
+        if((strings[3] !== char) || (strings[7] !== char) || (strings[4] !== char)) { strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello6")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+        }
+        
+        
+      
+        break;
+      }
+      case 7: {
+      
+        if((strings[6] !== char)  || (strings[8] !== char) ||  (strings[4] !== char)){ strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello7")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+          }
+        
+        
+      
+          break;
+        }
+      case 8: {
+      
+        if((strings[7] !== char)  || (strings[5] !== char) ||  (strings[4] !== char)){ strings[places[j]] = char;
+          setWhichMove('player')
+          setGameState(strings)
+          setCounter(counter + 1)
+          busyPlace(places[j])
+          console.log("hello8")
+          console.log(places)
+          if(char === 'X') {
+            setIsXChance(false)
+          }
+          else if(char === 'O') {
+            setIsXChance(true)
+          }
+          j= places.length+1
+         }
+      
+       
+        break;
+      }
+      default: {
+        console.log("brak ruchu")
+    }
+  
+  }
+  
+}
+  }
+  )
 
 
 
@@ -533,12 +466,12 @@ function App() {
     }
     if(counter === 3 && whichMove === 'computer' && call === 0) {
       
-      for(let i = 0; i < strings.length; i++) {
+      
         if(!IsXChance)
        {
-         
-        if(strings[i] === 'X') {
-          if (strings[oppositeMove[i]]) {
+         console.log("klikniety index " + indexClicked)
+        if(strings[indexClicked] === 'X') {
+          if (strings[oppositeMove[indexClicked]]) {
            if(strings[0]) {
             strings[1] =  'O';
             setWhichMove('player')
@@ -556,23 +489,23 @@ function App() {
           busyPlace(0)
            }
            
-        break;
+       
           }
           else {
-          strings[oppositeMove[i]] =  'O';
+          strings[oppositeMove[indexClicked]] =  'O';
           setWhichMove('player')
         setGameState(strings)
         setCounter(counter + 1)
         setIsXChance(true)
-        busyPlace(i)
-        break;
+        busyPlace(indexClicked)
+      
       }
          }
       }
      if(IsXChance)
       {
-        if(strings[i] === 'O') {
-          if (strings[oppositeMove[i]]) {
+        if(strings[indexClicked] === 'O') {
+          if (strings[oppositeMove[indexClicked]]) {
             if(strings[0]) {
               strings[1] =  'X';
               setWhichMove('player')
@@ -590,21 +523,21 @@ function App() {
             busyPlace(0)
              }
            
-        break;
+      
           }
           else {
-          strings[oppositeMove[i]] =  'X';
+          strings[oppositeMove[indexClicked]] =  'X';
           setWhichMove('player')
         setGameState(strings)
         setCounter(counter + 1)
         setIsXChance(false)
-        busyPlace(i)
-        break;
+        busyPlace(indexClicked)
+    
            }
       }
      }
 
-    }
+    
   }
   if(counter === 5 && whichMove === 'computer' && call === 0) {
     for(let i = 0; i < strings.length; i++) {
@@ -638,7 +571,7 @@ function App() {
          setWhichMove('player')
        setGameState(strings)
        setCounter(counter + 1)
-       setIsXChance(true)
+       setIsXChance(false)
        busyPlace(i)
        break;
      }
@@ -649,10 +582,47 @@ function App() {
   
 }
 if(counter === 7 && whichMove === 'computer' && call === 0) {
- for(let i = 0; i < strings.length; i++) {
-console.log("elo") 
+  for(let i = 0; i < strings.length; i++) {
+    if(!IsXChance)
+   {
+    if(strings[i] === 'X') {
+      if (strings[oppositeMove[i]]){
+        strings[bestMoveSeven(i,'O')] = 'O'
+        break;
+       }
+       else {
+       strings[oppositeMove[i]] =  'O';
+       setWhichMove('player')
+     setGameState(strings)
+     setCounter(counter + 1)
+     setIsXChance(true)
+     busyPlace(i)
+     break;
+   }
+  }}
+ if(IsXChance)
+  {
+    if(strings[i] === 'O') {
+      if (strings[oppositeMove[i]]){
+        strings[bestMoveSeven(i,'X')] = 'X'
+        
+     break;
+       }
+       else {
+       strings[oppositeMove[i]] =  'X';
+       setWhichMove('player')
+     setGameState(strings)
+     setCounter(counter + 1)
+     setIsXChance(false)
+     busyPlace(i)
+     break;
+   }
+  }
+ }
+
 }
-  }},[IsXChance, bestMoveFive, busyPlace, call, counter, oppositeMove, placeWithoutCenter, strings, whichMove])
+
+}},[IsXChance, bestMoveFive, bestMoveSeven, busyPlace, call, counter, indexClicked, oppositeMove, placeWithoutCenter, strings, whichMove])
   const chooseButtonX = () => {
     setIsXChance(true);
     setDisplayChooseChar(false)
@@ -690,7 +660,8 @@ console.log("elo")
     whichMove === 'player' &&  setWhichMove('computer')
     console.log(counter)
     busyPlace(index)
-
+    console.log(strings[index])
+      setIndexClicked(index)
   }}
     const reset = () =>{
     setGameState(initialState);
@@ -728,8 +699,7 @@ console.log("elo")
         if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
             return gameState[a];
         }
-        else if(counter === 9)
-        return 0;
+       
     }},
     [gameState, counter],
   );
@@ -765,7 +735,8 @@ console.log("elo")
   
   useEffect(() => {
     const timer = setTimeout(()=>{whenComputerFirstStart()},1000)
-  userFirstStart()
+    
+  const timer2 = setTimeout(()=>{userFirstStart()},1000)
     
   let winner  = checkWinner();
   
@@ -777,13 +748,14 @@ console.log("elo")
       reset();
   }
 
-  if(counter === 9){  
-    reset();
-    alert('Mamy remis!')
+  else if(counter === 9 && !winner){
+    reset()
+  }
+
     
-}
-return () => clearTimeout(timer);
-}, [counter])
+
+return () => clearTimeout(timer,timer2);
+}, [checkWinner, counter, userFirstStart, whenComputerFirstStart])
 
   
 
